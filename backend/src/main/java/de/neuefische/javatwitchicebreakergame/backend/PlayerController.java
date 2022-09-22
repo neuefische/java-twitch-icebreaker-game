@@ -20,6 +20,13 @@ public class PlayerController {
         return player;
     }
 
+    @PutMapping("/{name}")
+    public Player updatePlayer(@PathVariable String name, @RequestBody Player player) {
+        gameService.deletePlayer(name);
+        gameService.addPlayer(player);
+        return player;
+    }
+
     @GetMapping
     public List<Player> getPlayers() {
         return gameService.getPlayers();

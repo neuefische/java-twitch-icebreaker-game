@@ -1,6 +1,7 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
 public record Player(
-    String name
+    String name,
+    String guess
 ) {
 }

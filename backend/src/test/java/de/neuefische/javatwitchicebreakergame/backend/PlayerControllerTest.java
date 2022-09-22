@@ -66,4 +66,32 @@ public class PlayerControllerTest {
                         .contentType(APPLICATION_JSON)
         ).andExpect(content().json("[]"));
     }
+
+    @Test
+    @DirtiesContext
+    public void updatePlayer() throws Exception {
+        mockMvc.perform(
+                        post("/api/players")
+                                .contentType(APPLICATION_JSON)
+                                .content("{\"name\":\"Florian\"}")
+                ).andExpect(content().json("{\"name\":\"Florian\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                        put("/api/players/Florian")
+                                .contentType(APPLICATION_JSON)
+                                .content("{\"name\":\"Florian\",\"guess\":\"1\"}")
+                ).andExpect(content().json("{\"name\":\"Florian\",\"guess\":\"1\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                get("/api/players")
+                        .contentType(APPLICATION_JSON)
+        ).andExpect(content().json("[{\"name\":\"Florian\", \"guess\":\"1\"}]"));
+    }
 }
+
+
+
+
+

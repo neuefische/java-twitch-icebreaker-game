@@ -29,6 +29,6 @@ public class GameService {
     }
 
     public void deletePlayer(String name) {
-        players.remove(new Player(name));
+        players.removeIf(player -> player.name().equals(name));
     }
 }

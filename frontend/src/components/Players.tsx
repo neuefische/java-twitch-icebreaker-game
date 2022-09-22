@@ -32,12 +32,20 @@ export default function Players() {
             .then(() => setPlayers((currentState) => currentState.filter((p) => p.name !== player.name)))
     }
 
+    function changeGuess(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
+        if (player.guess === event.target.value) return
+        player.guess = event.target.value
+        axios.put(`/api/players/${player.name}`, player)
+    }
+
     return (
         <>
             <ul>
                 {players.map((player, index) => <li key={index}>
                         <p>
                             {player.name}
+                            <input type={"number"} value={player.guess}
+                                   onChange={event => changeGuess(player, event)}/>
                             <button onClick={() => onPlayerDelete(player)}>🗑</button>
                         </p>
                     </li>

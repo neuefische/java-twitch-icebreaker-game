@@ -1,3 +1,4 @@
 export type Player = {
-    name: string
+    name: string,
+    guess: string,
 }
