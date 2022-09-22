@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/questions")
 public class QuestionsController {
 
-    private final QuestionsService questionsService;
+    private final GameService gameService;
 
-    public QuestionsController(QuestionsService questionsService) {
-        this.questionsService = questionsService;
+    public QuestionsController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @PutMapping("/current")
     public Question setCurrentQuestion(@RequestBody Question question) {
-        return questionsService.setCurrentQuestion(question);
+        return gameService.setCurrentQuestion(question);
     }
 
     @GetMapping("/current")
     public Question getCurrentQuestion() {
-        return questionsService.getCurrentQuestion();
+        return gameService.getCurrentQuestion();
     }
 }

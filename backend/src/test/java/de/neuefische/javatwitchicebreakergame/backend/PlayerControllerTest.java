@@ -9,41 +9,41 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class QuestionsControllerTest {
+public class PlayerControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
     @DirtiesContext
-    public void putQuestion() throws Exception {
+    public void postPlayer() throws Exception {
         mockMvc.perform(
-                        put("/api/questions/current")
+                        post("/api/players")
                                 .contentType(APPLICATION_JSON)
-                                .content("{\"text\":\"Hello World\"}")
-                ).andExpect(content().json("{\"text\":\"Hello World\"}"))
+                                .content("{\"name\":\"Florian\"}")
+                ).andExpect(content().json("{\"name\":\"Florian\"}"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @DirtiesContext
-    public void getQuestion() throws Exception {
+    public void getPlayerList() throws Exception {
         mockMvc.perform(
-                put("/api/questions/current")
-                        .contentType(APPLICATION_JSON)
-                        .content("{\"text\":\"Hello World\"}")
-        ).andExpect(status().isOk());
+                        post("/api/players")
+                                .contentType(APPLICATION_JSON)
+                                .content("{\"name\":\"Florian\"}")
+                ).andExpect(content().json("{\"name\":\"Florian\"}"))
+                .andExpect(status().isOk());
 
         mockMvc.perform(
-                get("/api/questions/current")
+                get("/api/players")
                         .contentType(APPLICATION_JSON)
-                        .content("{\"text\":\"Hello World\"}")
-        ).andExpect(content().json("{\"text\":\"Hello World\"}"));
+        ).andExpect(content().json("[{\"name\":\"Florian\"}]"));
     }
 }
