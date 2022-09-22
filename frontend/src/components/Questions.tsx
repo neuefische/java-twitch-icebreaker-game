@@ -6,10 +6,17 @@ export default function Questions() {
     const [currentQuestion, setCurrentQuestion] = React.useState<Question>();
     const [nextQuestion, setNextQuestion] = React.useState<string>("");
 
-    useEffect(() => {
+    let fetchQuestion = () => {
         axios.get('/api/questions/current')
             .then((response) => response.data)
             .then((data) => setCurrentQuestion(data))
+    };
+    useEffect(fetchQuestion, [])
+
+    useEffect(() => {
+        setInterval(() => {
+            fetchQuestion();
+        }, 1000);
     }, [])
 
     const onQuestionSave = () => {

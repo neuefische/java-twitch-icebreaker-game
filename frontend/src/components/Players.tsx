@@ -7,10 +7,17 @@ export default function Players() {
     const [players, setPlayers] = useState<Player[]>([])
     const [name, setName] = useState<string>("")
 
-    useEffect(() => {
+    let fetchPlayers = () => {
         axios.get('/api/players')
             .then((response) => response.data)
             .then((data) => setPlayers(data))
+    };
+    useEffect(fetchPlayers, [])
+
+    useEffect(() => {
+        setInterval(() => {
+            fetchPlayers();
+        }, 1000);
     }, [])
 
     const onPlayerAdd = () => {
