@@ -10,4 +10,8 @@ public class QuestionsService {
         System.out.println("Setting current question to " + question);
         this.currentQuestion = question;
     }
+
+    public Question getCurrentQuestion() {
+        return currentQuestion;
+    }
 }
