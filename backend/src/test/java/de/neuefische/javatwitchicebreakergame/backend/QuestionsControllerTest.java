@@ -24,10 +24,11 @@ public class QuestionsControllerTest {
     @DirtiesContext
     public void putQuestion() throws Exception {
         mockMvc.perform(
-                put("/api/questions/current")
-                        .contentType(APPLICATION_JSON)
-                        .content("{\"text\":\"Hello World\"}")
-        ).andExpect(status().isOk());
+                        put("/api/questions/current")
+                                .contentType(APPLICATION_JSON)
+                                .content("{\"text\":\"Hello World\"}")
+                ).andExpect(content().json("{\"text\":\"Hello World\"}"))
+                .andExpect(status().isOk());
     }
 
     @Test

@@ -13,8 +13,8 @@ public class QuestionsController {
     }
 
     @PutMapping("/current")
-    public void setCurrentQuestion(@RequestBody Question question) {
-        questionsService.setCurrentQuestion(question);
+    public Question setCurrentQuestion(@RequestBody Question question) {
+        return questionsService.setCurrentQuestion(question);
     }
 
     @GetMapping("/current")
