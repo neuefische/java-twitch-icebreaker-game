@@ -8,8 +8,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,5 +44,26 @@ public class PlayerControllerTest {
                 get("/api/players")
                         .contentType(APPLICATION_JSON)
         ).andExpect(content().json("[{\"name\":\"Florian\"}]"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void deletePlayer() throws Exception {
+        mockMvc.perform(
+                        post("/api/players")
+                                .contentType(APPLICATION_JSON)
+                                .content("{\"name\":\"Florian\"}")
+                ).andExpect(content().json("{\"name\":\"Florian\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                delete("/api/players/Florian")
+                        .contentType(APPLICATION_JSON)
+        ).andExpect(status().isOk());
+
+        mockMvc.perform(
+                get("/api/players")
+                        .contentType(APPLICATION_JSON)
+        ).andExpect(content().json("[]"));
     }
 }

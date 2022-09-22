@@ -27,4 +27,8 @@ public class GameService {
     public void addPlayer(Player player) {
         players.add(player);
     }
+
+    public void deletePlayer(String name) {
+        players.remove(new Player(name));
+    }
 }

@@ -25,4 +25,9 @@ public class PlayerController {
         return gameService.getPlayers();
     }
 
+    @DeleteMapping("{name}")
+    public void deletePlayer(@PathVariable String name) {
+        gameService.deletePlayer(name);
+    }
+
 }

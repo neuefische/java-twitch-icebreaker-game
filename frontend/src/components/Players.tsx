@@ -20,12 +20,18 @@ export default function Players() {
             .then(() => setName(""))
     }
 
+    const onPlayerDelete = (player: Player) => {
+        axios.delete(`/api/players/${player.name}`)
+            .then(() => setPlayers((currentState) => currentState.filter((p) => p.name !== player.name)))
+    }
+
     return (
         <>
             <ul>
                 {players.map((player, index) => <li key={index}>
                         <p>
                             {player.name}
+                            <button onClick={() => onPlayerDelete(player)}>🗑</button>
                         </p>
                     </li>
                 )}
