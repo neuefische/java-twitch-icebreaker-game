@@ -1,5 +1,6 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,18 @@ public class GameWebSocketService extends TextWebSocketHandler {
         sessions.forEach(s -> {
             try {
                 s.sendMessage(new TextMessage(payload));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void sendPlayerListToEveryone() throws JsonProcessingException {
+        List<Player> players = gameService.getPlayers();
+        String json = objectMapper.writeValueAsString(players);
+        sessions.forEach(s -> {
+            try {
+                s.sendMessage(new TextMessage(json));
             } catch (Exception e) {
                 e.printStackTrace();
             }

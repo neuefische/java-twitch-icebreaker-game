@@ -1,5 +1,6 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class PlayerController {
 
     private final GameService gameService;
+    private final GameWebSocketService gameWebSocketService;
 
     @PostMapping
     public Player addPlayer(@RequestBody Player player) {
@@ -19,9 +21,10 @@ public class PlayerController {
     }
 
     @PutMapping("/{name}")
-    public Player updatePlayer(@PathVariable String name, @RequestBody Player player) {
+    public Player updatePlayer(@PathVariable String name, @RequestBody Player player) throws JsonProcessingException {
         gameService.deletePlayer(name);
         gameService.addPlayer(player);
+        gameWebSocketService.sendPlayerListToEveryone();
         return player;
     }
 
