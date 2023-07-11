@@ -48,6 +48,10 @@ export default function MyPlayerCard(props: Props) {
                                onChange={event => changeAnswer(props.player, event)}/>
                     </>
                 }
+                {
+                    props.gameState === "ENTER_QUESTION_SHOW_RESULT" &&
+                    <>{" "} {props.player.guess} ({props.player.answer ? "Ja" : "Nein"})</>
+                }
             </p>
         </li>
     )
