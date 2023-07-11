@@ -1,5 +1,6 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 public class QuestionsController {
 
     private final GameService gameService;
+    private final GameWebSocketService gameWebSocketService;
 
     @PutMapping("/current")
-    public Question setCurrentQuestion(@RequestBody Question question) {
-        return gameService.setCurrentQuestion(question);
+    public void setCurrentQuestion(@RequestBody Question question) throws JsonProcessingException {
+        gameService.setCurrentQuestion(question);
+        gameWebSocketService.sendGameToEveryone();
     }
 
     @GetMapping("/current")

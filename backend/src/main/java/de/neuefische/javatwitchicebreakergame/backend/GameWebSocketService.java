@@ -25,8 +25,7 @@ public class GameWebSocketService extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
         List<Player> players = gameService.getPlayers();
-        String json = objectMapper.writeValueAsString(players);
-        session.sendMessage(new TextMessage(json));
+        sendGameToEveryone();
     }
 
     @Override
@@ -41,9 +40,12 @@ public class GameWebSocketService extends TextWebSocketHandler {
         });
     }
 
-    public void sendPlayerListToEveryone() throws JsonProcessingException {
-        List<Player> players = gameService.getPlayers();
-        String json = objectMapper.writeValueAsString(players);
+    public void sendGameToEveryone() throws JsonProcessingException {
+        Game game = Game.builder()
+                .currentQuestion(gameService.getCurrentQuestion())
+                .players(gameService.getPlayers())
+                .build();
+        String json = objectMapper.writeValueAsString(game);
         sessions.forEach(s -> {
             try {
                 s.sendMessage(new TextMessage(json));

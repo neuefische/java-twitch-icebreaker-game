@@ -3,23 +3,25 @@ import './App.css';
 import Questions from "./components/Questions";
 import Players from "./components/Players";
 import useWebSocket from "react-use-websocket";
-import {Player} from "./Player";
+import {Game} from "./Game";
 
 function App() {
 
-    const [players, setPlayers] = useState<Player[]>([])
+    const [game, setGame] = useState<Game>()
 
     useWebSocket("ws://localhost:8080/api/ws/game", {
         onOpen: () => console.log("opened"),
         onMessage: (event) => {
-            setPlayers(JSON.parse(event.data))
+            setGame(JSON.parse(event.data))
         },
         onClose: () => console.log("closed"),
     });
 
+    if (!game) return (<>Loading...</>);
+
     return <>
-        <Questions></Questions>
-        <Players players={players}></Players>
+        <Questions currentQuestion={game.currentQuestion}></Questions>
+        <Players players={game.players}></Players>
     </>;
 }
 
