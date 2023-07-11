@@ -7,6 +7,8 @@ import java.util.List;
 @Builder
 public record Game(
     Question currentQuestion,
-    List<PublicPlayer> players
+    List<PublicPlayer> players,
+    String myId,
+    String mySessionId
 ) {
 }

@@ -1,6 +1,5 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,10 +22,11 @@ public class GameWebSocketService extends TextWebSocketHandler {
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         sessions.add(session);
         gameService.addPlayer(Player.builder()
-                .id(session.getId())
+                .id(UUID.randomUUID().toString())
+                .sessionId(session.getId())
                 .name("Player " + session.getId().substring(0, 4))
                 .guess(0)
                 .answer(false)
@@ -45,14 +46,16 @@ public class GameWebSocketService extends TextWebSocketHandler {
         });
     }
 
-    public void sendGameToEveryone() throws JsonProcessingException {
-        Game game = Game.builder()
-                .currentQuestion(gameService.getCurrentQuestion())
-                .players(gameService.getPlayers().stream().map(p -> new PublicPlayer(p.id(), p.name())).collect(Collectors.toList()))
-                .build();
-        String json = objectMapper.writeValueAsString(game);
+    public void sendGameToEveryone() {
         sessions.forEach(s -> {
             try {
+                Game game = Game.builder()
+                        .currentQuestion(gameService.getCurrentQuestion())
+                        .players(gameService.getPlayers().stream().map(p -> new PublicPlayer(p.id(), p.name())).collect(Collectors.toList()))
+                        .myId(gameService.getPlayers().stream().filter(p -> p.sessionId().equals(s.getId())).findFirst().get().id())
+                        .mySessionId(s.getId())
+                        .build();
+                String json = objectMapper.writeValueAsString(game);
                 s.sendMessage(new TextMessage(json));
             } catch (Exception e) {
                 e.printStackTrace();

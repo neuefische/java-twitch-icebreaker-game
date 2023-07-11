@@ -21,7 +21,7 @@ function App() {
 
     return <>
         <Questions currentQuestion={game.currentQuestion}></Questions>
-        <Players players={game.players}></Players>
+        <Players myId={game.myId} mySessionId={game.mySessionId} players={game.players}></Players>
     </>;
 }
 

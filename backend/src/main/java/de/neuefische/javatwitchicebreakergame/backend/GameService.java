@@ -29,13 +29,17 @@ public class GameService {
         players.add(player);
     }
 
-    public void deletePlayer(String id) {
-        players.removeIf(player -> player.id().equals(id));
+    public void deletePlayer(String sessionId) {
+        players.removeIf(player -> player.sessionId().equals(sessionId));
     }
 
-    public void updatePlayer(Player player ){
+    public void updatePlayer(String sessionId, PlayerChange playerChange) {
         this.players = players.stream()
-                .map(currentPlayer -> currentPlayer.id().equals(player.id()) ? player : currentPlayer)
+                .map(currentPlayer -> currentPlayer.sessionId().equals(sessionId) ? currentPlayer
+                        .withName(playerChange.name())
+                        .withGuess(playerChange.guess())
+                        .withAnswer(playerChange.answer())
+                        : currentPlayer)
                 .collect(Collectors.toList());
     }
 }

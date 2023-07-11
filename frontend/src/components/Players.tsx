@@ -1,38 +1,24 @@
-import {useState} from "react";
 import {Player} from "../Player";
-import axios from "axios";
+import PlayerCard from "./PlayerCard";
+import MyPlayerCard from "./MyPlayerCard";
 
 type Props = {
+    myId: string
+    mySessionId: string
     players: Player[]
 }
 export default function Players(props: Props) {
 
-    const [name, setName] = useState<string>("")
-
-    function changeGuess(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
-        let input = Number(event.target.value);
-        if (player.guess === input) return
-        player.guess = input
-        axios.put(`/api/players/${player.id}`, player)
-    }
-
-    function changeAnswer(player: Player) {
-        player.answer = !player.answer
-        axios.put(`/api/players/${player.id}`, player)
-    }
-
     return (
         <>
             <ul>
-                {props.players.map((player, index) => <li key={index}>
-                        <p>
-                            {player.name}
-                            <input type={"number"} value={player.guess}
-                                   onChange={event => changeGuess(player, event)}/>
-                            <input type={"checkbox"} checked={player.answer}
-                                   onChange={event => changeAnswer(player)}/>
-                        </p>
-                    </li>
+                {props.players.map((player, index) =>
+                    player.id === props.myId &&
+                    <MyPlayerCard key={index} player={player} myId={props.myId} mySessionId={props.mySessionId}/>
+                )}
+                {props.players.map((player, index) =>
+                    player.id !== props.myId &&
+                    <PlayerCard key={index} player={player}/>
                 )}
             </ul>
         </>
