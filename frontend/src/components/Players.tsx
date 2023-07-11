@@ -11,6 +11,8 @@ type Props = {
 }
 export default function Players(props: Props) {
 
+    let playersThatSaidYes = props.players.filter(player => player.answer).length
+
     return (
         <>
             <ul>
@@ -23,6 +25,10 @@ export default function Players(props: Props) {
                     <PlayerCard gameState={props.gameState} key={index} player={player}/>
                 )}
             </ul>
+            {
+                props.gameState === "ENTER_QUESTION_SHOW_RESULT" &&
+                <p>{playersThatSaidYes} players said yes</p>
+            }
         </>
     )
 
