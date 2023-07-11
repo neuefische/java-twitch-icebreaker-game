@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Question} from "../Question";
 import axios from "axios";
 
@@ -19,7 +19,8 @@ export default function Questions(props: Props) {
 
     return <>
         {props.currentQuestion?.text}
-        <input placeholder={"Question?"} type={"text"} onChange={event => setNextQuestion(event.target.value)} value={nextQuestion}/>
+        <input placeholder={"Question?"} type={"text"} onChange={event => setNextQuestion(event.target.value)}
+               value={nextQuestion}/>
         <button onClick={onQuestionSave}>Save</button>
     </>
 }
