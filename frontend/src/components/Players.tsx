@@ -1,24 +1,20 @@
 import {useEffect, useState} from "react";
 import {Player} from "../Player";
 import axios from "axios";
+import useWebSocket from "react-use-websocket";
 
 export default function Players() {
 
     const [players, setPlayers] = useState<Player[]>([])
     const [name, setName] = useState<string>("")
 
-    let fetchPlayers = () => {
-        axios.get('/api/players')
-            .then((response) => response.data)
-            .then((data) => setPlayers(data))
-    };
-    useEffect(fetchPlayers, [])
-
-    useEffect(() => {
-        setInterval(() => {
-            fetchPlayers();
-        }, 1000);
-    }, [])
+    useWebSocket("ws://localhost:8080/api/ws/game", {
+        onOpen: () => console.log("opened"),
+        onMessage: (event) => {
+            setPlayers(JSON.parse(event.data))
+        },
+        onClose: () => console.log("closed"),
+    });
 
     const onPlayerAdd = () => {
         axios.post('/api/players', {name: name})
