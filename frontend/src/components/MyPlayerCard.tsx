@@ -16,8 +16,8 @@ export default function MyPlayerCard(props: Props) {
         axios.put(`/api/players/${props.mySessionId}`, player)
     }
 
-    function changeAnswer(player: Player) {
-        player.answer = !player.answer
+    function changeAnswer(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
+        player.answer = event.target.checked
         axios.put(`/api/players/${props.mySessionId}`, player)
     }
 
@@ -30,8 +30,8 @@ export default function MyPlayerCard(props: Props) {
                         <>
                             <input type={"number"} value={props.player.guess}
                                    onChange={event => changeGuess(props.player, event)}/>
-                            <input type={"checkbox"} checked={props.player.answer}
-                                   onChange={event => changeAnswer(props.player)}/>
+                            <input type={"checkbox"}
+                                   onChange={event => changeAnswer(props.player, event)}/>
                         </>
                     }
                 </p>
