@@ -23,8 +23,7 @@ public class PlayerController {
 
     @PutMapping("/{name}")
     public Player updatePlayer(@PathVariable String name, @RequestBody Player player) throws JsonProcessingException {
-        gameService.deletePlayer(name);
-        gameService.addPlayer(player);
+        gameService.updatePlayer(player);
         gameWebSocketService.sendGameToEveryone();
         return player;
     }

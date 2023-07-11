@@ -4,11 +4,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
     private Question currentQuestion;
-    private final List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
 
     public Question setCurrentQuestion(Question question) {
         System.out.println("Setting current question to " + question);
@@ -30,5 +31,11 @@ public class GameService {
 
     public void deletePlayer(String name) {
         players.removeIf(player -> player.name().equals(name));
+    }
+
+    public void updatePlayer(Player player ){
+        this.players = players.stream()
+                .map(currentPlayer -> currentPlayer.name().equals(player.name()) ? player : currentPlayer)
+                .collect(Collectors.toList());
     }
 }
