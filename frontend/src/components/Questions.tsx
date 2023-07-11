@@ -1,5 +1,4 @@
 import React from "react";
-import {Question} from "../Question";
 import axios from "axios";
 
 type Props = {

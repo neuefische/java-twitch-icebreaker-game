@@ -49,10 +49,17 @@ public class GameWebSocketService extends TextWebSocketHandler {
     public void sendGameToEveryone() {
         sessions.forEach(s -> {
             try {
+                GameState gameState = gameService.getGameState();
                 Game game = Game.builder()
-                        .gameState(gameService.getGameState())
+                        .gameState(gameState)
                         .currentQuestion(gameService.getCurrentQuestion())
-                        .players(gameService.getPlayers().stream().map(p -> new PublicPlayer(p.id(), p.name())).collect(Collectors.toList()))
+                        .players(gameService.getPlayers().stream().map(p -> PublicPlayer.builder()
+                                .name(p.name())
+                                .id(p.id())
+                                .guess(gameState == GameState.ENTER_QUESTION_SHOW_RESULT ? p.guess() : null)
+                                .answer(gameState == GameState.ENTER_QUESTION_SHOW_RESULT ? p.answer() : null)
+                                .build()
+                        ).collect(Collectors.toList()))
                         .myId(gameService.getPlayers().stream().filter(p -> p.sessionId().equals(s.getId())).findFirst().get().id())
                         .mySessionId(s.getId())
                         .build();

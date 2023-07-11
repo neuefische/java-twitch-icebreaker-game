@@ -45,6 +45,7 @@ public class GameService {
                         .withAnswer(playerChange.answer())
                         : currentPlayer)
                 .collect(Collectors.toList());
+        System.out.println("Updated player with sessionId " + sessionId + " to " + playerChange + " (now " + players + ")");
     }
 
     public void switchState() {

@@ -7,6 +7,12 @@ type Props = {
 }
 export default function PlayerCard(props: Props) {
     return (
-        <li>{props.player.name}</li>
+        <li>
+            {props.player.name}
+            {
+                props.gameState === "ENTER_QUESTION_SHOW_RESULT" &&
+                <>{" "} {props.player.guess} ({props.player.answer ? "Ja" : "Nein"})</>
+            }
+        </li>
     )
 }
