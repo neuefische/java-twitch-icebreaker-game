@@ -1,20 +1,13 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Player} from "../Player";
 import axios from "axios";
-import useWebSocket from "react-use-websocket";
 
-export default function Players() {
+type Props = {
+    players: Player[]
+}
+export default function Players(props: Props) {
 
-    const [players, setPlayers] = useState<Player[]>([])
     const [name, setName] = useState<string>("")
-
-    useWebSocket("ws://localhost:8080/api/ws/game", {
-        onOpen: () => console.log("opened"),
-        onMessage: (event) => {
-            setPlayers(JSON.parse(event.data))
-        },
-        onClose: () => console.log("closed"),
-    });
 
     const onPlayerAdd = () => {
         axios.post('/api/players', {name: name})
@@ -23,7 +16,6 @@ export default function Players() {
 
     const onPlayerDelete = (player: Player) => {
         axios.delete(`/api/players/${player.name}`)
-            .then(() => setPlayers((currentState) => currentState.filter((p) => p.name !== player.name)))
     }
 
     function changeGuess(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
@@ -35,7 +27,7 @@ export default function Players() {
     return (
         <>
             <ul>
-                {players.map((player, index) => <li key={index}>
+                {props.players.map((player, index) => <li key={index}>
                         <p>
                             {player.name}
                             <input type={"number"} value={player.guess}
