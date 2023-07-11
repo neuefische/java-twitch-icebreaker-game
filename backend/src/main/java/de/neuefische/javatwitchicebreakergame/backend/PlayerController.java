@@ -15,8 +15,9 @@ public class PlayerController {
     private final GameWebSocketService gameWebSocketService;
 
     @PostMapping
-    public Player addPlayer(@RequestBody Player player) {
+    public Player addPlayer(@RequestBody Player player) throws JsonProcessingException {
         gameService.addPlayer(player);
+        gameWebSocketService.sendPlayerListToEveryone();
         return player;
     }
 
@@ -34,8 +35,9 @@ public class PlayerController {
     }
 
     @DeleteMapping("{name}")
-    public void deletePlayer(@PathVariable String name) {
+    public void deletePlayer(@PathVariable String name) throws JsonProcessingException {
         gameService.deletePlayer(name);
+        gameWebSocketService.sendPlayerListToEveryone();
     }
 
 }

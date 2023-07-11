@@ -18,8 +18,6 @@ export default function Players() {
 
     const onPlayerAdd = () => {
         axios.post('/api/players', {name: name})
-            .then((response) => response.data)
-            .then((data) => setPlayers((currentState) => [...currentState, data]))
             .then(() => setName(""))
     }
 
