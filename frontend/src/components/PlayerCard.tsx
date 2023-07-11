@@ -1,7 +1,9 @@
 import {Player} from "../Player";
+import {GameState} from "../GameState";
 
 type Props = {
     player: Player
+    gameState: GameState
 }
 export default function PlayerCard(props: Props) {
     return (

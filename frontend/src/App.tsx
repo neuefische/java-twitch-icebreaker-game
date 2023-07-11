@@ -15,7 +15,7 @@ function App() {
         host = "localhost:8080"
     }
 
-    useWebSocket("ws://" + host+"/api/ws/game", {
+    useWebSocket("ws://" + host + "/api/ws/game", {
         onOpen: () => console.log("opened"),
         onMessage: (event) => {
             setGame(JSON.parse(event.data))
@@ -26,11 +26,18 @@ function App() {
     if (!game) return (<>Loading...</>);
 
     return <>
-        <Questions currentQuestion={game.currentQuestion}></Questions>
-        <Players myId={game.myId} mySessionId={game.mySessionId} players={game.players}></Players>
-        <button onClick={() => {
-            axios.post("/api/game/switch-state")
-        }} >Next</button>
+        {
+            game.gameState === "ENTER_QUESTION_SHOW_RESULT"
+                ? <Questions></Questions>
+                : game.currentQuestion?.text
+        }
+        <Players myId={game.myId} mySessionId={game.mySessionId} players={game.players} gameState={game.gameState}></Players>
+        {
+            game.gameState === "GUESS_AND_ANSWER" &&
+            <button onClick={() => {
+                axios.post("/api/game/switch-state")
+            }}>Next</button>
+        }
     </>;
 }
 

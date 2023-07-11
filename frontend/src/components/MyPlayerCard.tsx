@@ -1,10 +1,12 @@
 import {Player} from "../Player";
 import axios from "axios";
+import {GameState} from "../GameState";
 
 export type Props = {
     player: Player
     myId: string
     mySessionId: string
+    gameState: GameState
 }
 
 export default function MyPlayerCard(props: Props) {
@@ -26,7 +28,7 @@ export default function MyPlayerCard(props: Props) {
                 <p>
                     {props.player.name}
                     {
-                        props.player.id === props.myId &&
+                        props.player.id === props.myId && props.gameState === "GUESS_AND_ANSWER" &&
                         <>
                             <input type={"number"} value={props.player.guess}
                                    onChange={event => changeGuess(props.player, event)}/>
