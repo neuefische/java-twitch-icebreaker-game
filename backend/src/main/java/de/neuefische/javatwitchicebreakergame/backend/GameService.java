@@ -16,6 +16,7 @@ public class GameService {
 
     public Question setCurrentQuestion(Question question) {
         System.out.println("Setting current question to " + question);
+        switchState();
         this.currentQuestion = question;
         return question;
     }
