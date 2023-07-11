@@ -9,6 +9,7 @@ public record Game(
     Question currentQuestion,
     List<PublicPlayer> players,
     String myId,
-    String mySessionId
+    String mySessionId,
+    GameState gameState
 ) {
 }

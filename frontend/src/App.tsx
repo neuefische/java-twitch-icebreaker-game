@@ -4,6 +4,7 @@ import Questions from "./components/Questions";
 import Players from "./components/Players";
 import useWebSocket from "react-use-websocket";
 import {Game} from "./Game";
+import axios from "axios";
 
 function App() {
 
@@ -27,6 +28,9 @@ function App() {
     return <>
         <Questions currentQuestion={game.currentQuestion}></Questions>
         <Players myId={game.myId} mySessionId={game.mySessionId} players={game.players}></Players>
+        <button onClick={() => {
+            axios.post("/api/game/switch-state")
+        }} >Next</button>
     </>;
 }
 

@@ -50,6 +50,7 @@ public class GameWebSocketService extends TextWebSocketHandler {
         sessions.forEach(s -> {
             try {
                 Game game = Game.builder()
+                        .gameState(gameService.getGameState())
                         .currentQuestion(gameService.getCurrentQuestion())
                         .players(gameService.getPlayers().stream().map(p -> new PublicPlayer(p.id(), p.name())).collect(Collectors.toList()))
                         .myId(gameService.getPlayers().stream().filter(p -> p.sessionId().equals(s.getId())).findFirst().get().id())

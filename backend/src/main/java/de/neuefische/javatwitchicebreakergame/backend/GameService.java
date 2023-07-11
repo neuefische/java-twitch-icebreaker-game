@@ -1,5 +1,6 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameService {
+    @Getter
+    private GameState gameState = GameState.ENTER_QUESTION_SHOW_RESULT;
     private Question currentQuestion;
     private List<Player> players = new ArrayList<>();
 
@@ -41,5 +44,13 @@ public class GameService {
                         .withAnswer(playerChange.answer())
                         : currentPlayer)
                 .collect(Collectors.toList());
+    }
+
+    public void switchState() {
+        if (gameState == GameState.ENTER_QUESTION_SHOW_RESULT) {
+            gameState = GameState.GUESS_AND_ANSWER;
+        } else {
+            gameState = GameState.ENTER_QUESTION_SHOW_RESULT;
+        }
     }
 }
