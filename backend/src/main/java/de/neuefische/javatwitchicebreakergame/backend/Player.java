@@ -2,7 +2,7 @@ package de.neuefische.javatwitchicebreakergame.backend;
 
 public record Player(
     String name,
-    String guess,
+    Integer guess,
     boolean answer
 ) {
 }

@@ -19,8 +19,9 @@ export default function Players(props: Props) {
     }
 
     function changeGuess(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
-        if (player.guess === event.target.value) return
-        player.guess = event.target.value
+        let input = Number(event.target.value);
+        if (player.guess === input) return
+        player.guess = input
         axios.put(`/api/players/${player.name}`, player)
     }
 

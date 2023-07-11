@@ -1,5 +1,5 @@
 export type Player = {
     name: string,
-    guess: string,
+    guess: number,
     answer: boolean,
 }
