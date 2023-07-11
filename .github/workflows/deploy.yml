@@ -81,7 +81,7 @@ jobs:
       - name: Restart docker container
         uses: appleboy/ssh-action@master
         with:
-          host: http://ec2-13-38-48-249.eu-west-3.compute.amazonaws.com
+          host: ec2-13-38-48-249.eu-west-3.compute.amazonaws.com
           username: myapp
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
