@@ -1,18 +1,16 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/players")
+@RequiredArgsConstructor
 public class PlayerController {
 
     private final GameService gameService;
-
-    public PlayerController(GameService gameService) {
-        this.gameService = gameService;
-    }
 
     @PostMapping
     public Player addPlayer(@RequestBody Player player) {

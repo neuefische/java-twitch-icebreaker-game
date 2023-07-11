@@ -1,16 +1,14 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/questions")
+@RequiredArgsConstructor
 public class QuestionsController {
 
     private final GameService gameService;
-
-    public QuestionsController(GameService gameService) {
-        this.gameService = gameService;
-    }
 
     @PutMapping("/current")
     public Question setCurrentQuestion(@RequestBody Question question) {
