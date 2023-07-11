@@ -18,7 +18,7 @@ export default function Questions(props: Props) {
     }
 
     return <>
-        {props.currentQuestion.text}
+        {props.currentQuestion?.text}
         <input placeholder={"Question?"} type={"text"} onChange={event => setNextQuestion(event.target.value)} value={nextQuestion}/>
         <button onClick={onQuestionSave}>Save</button>
     </>

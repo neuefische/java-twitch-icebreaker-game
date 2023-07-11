@@ -24,6 +24,11 @@ export default function Players(props: Props) {
         axios.put(`/api/players/${player.name}`, player)
     }
 
+    function changeAnswer(player: Player) {
+        player.answer = !player.answer
+        axios.put(`/api/players/${player.name}`, player)
+    }
+
     return (
         <>
             <ul>
@@ -32,6 +37,8 @@ export default function Players(props: Props) {
                             {player.name}
                             <input type={"number"} value={player.guess}
                                    onChange={event => changeGuess(player, event)}/>
+                            <input type={"checkbox"} checked={player.answer}
+                                   onChange={event => changeAnswer(player)}/>
                             <button onClick={() => onPlayerDelete(player)}>🗑</button>
                         </p>
                     </li>
