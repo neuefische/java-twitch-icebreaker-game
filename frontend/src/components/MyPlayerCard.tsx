@@ -12,23 +12,31 @@ export type Props = {
 
 export default function MyPlayerCard(props: Props) {
 
+    const [name, setName] = useState<string>("")
     const [guess, setGuess] = useState<number>(0)
     const [answer, setAnswer] = useState<boolean>(false)
+
+    function changeName(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
+        let input = event.target.value;
+        setName(input)
+        sendUpdate(player, input, guess, answer);
+    }
 
     function changeGuess(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
         let input = Number(event.target.value);
         if (player.guess === input) return
         setGuess(input)
-        sendUpdate(player, input, answer);
+        sendUpdate(player, name, input, answer);
     }
 
     function changeAnswer(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
         let input = event.target.checked;
         setAnswer(input)
-        sendUpdate(player, guess, input);
+        sendUpdate(player, name, guess, input);
     }
 
-    function sendUpdate(player: Player, guess: number, answer: boolean) {
+    function sendUpdate(player: Player, name: string, guess: number, answer: boolean) {
+        player.name = name
         player.guess = guess
         player.answer = answer
         axios.put(`/api/players/${props.mySessionId}`, player)
@@ -37,7 +45,7 @@ export default function MyPlayerCard(props: Props) {
     return (
         <li>
             <p>
-                {props.player.name}
+                <input value={name} onChange={event => changeName(props.player, event)} placeholder="Name"/>
                 {
                     props.player.id === props.myId && props.gameState === "GUESS_AND_ANSWER" &&
                     <>
