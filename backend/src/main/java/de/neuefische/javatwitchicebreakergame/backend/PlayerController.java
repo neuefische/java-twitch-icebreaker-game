@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/players")
 @RequiredArgsConstructor
@@ -14,29 +12,11 @@ public class PlayerController {
     private final GameService gameService;
     private final GameWebSocketService gameWebSocketService;
 
-    @PostMapping
-    public Player addPlayer(@RequestBody Player player) throws JsonProcessingException {
-        gameService.addPlayer(player);
-        gameWebSocketService.sendGameToEveryone();
-        return player;
-    }
-
-    @PutMapping("/{name}")
-    public Player updatePlayer(@PathVariable String name, @RequestBody Player player) throws JsonProcessingException {
+    @PutMapping("/{id}")
+    public Player updatePlayer(@PathVariable String id, @RequestBody Player player) throws JsonProcessingException {
         gameService.updatePlayer(player);
         gameWebSocketService.sendGameToEveryone();
         return player;
-    }
-
-    @GetMapping
-    public List<Player> getPlayers() {
-        return gameService.getPlayers();
-    }
-
-    @DeleteMapping("{name}")
-    public void deletePlayer(@PathVariable String name) throws JsonProcessingException {
-        gameService.deletePlayer(name);
-        gameWebSocketService.sendGameToEveryone();
     }
 
 }

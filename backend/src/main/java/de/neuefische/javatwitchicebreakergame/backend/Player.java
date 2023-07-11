@@ -1,8 +1,12 @@
 package de.neuefische.javatwitchicebreakergame.backend;
 
+import lombok.Builder;
+
+@Builder
 public record Player(
-    String name,
-    Integer guess,
-    boolean answer
+        String id,
+        String name,
+        Integer guess,
+        boolean answer
 ) {
 }

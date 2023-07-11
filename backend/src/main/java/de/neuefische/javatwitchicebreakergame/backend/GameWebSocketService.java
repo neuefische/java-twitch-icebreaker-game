@@ -10,8 +10,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +24,12 @@ public class GameWebSocketService extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
-        List<Player> players = gameService.getPlayers();
+        gameService.addPlayer(Player.builder()
+                .id(session.getId())
+                .name("Player " + session.getId().substring(0, 4))
+                .guess(0)
+                .answer(false)
+                .build());
         sendGameToEveryone();
     }
 
@@ -43,7 +48,7 @@ public class GameWebSocketService extends TextWebSocketHandler {
     public void sendGameToEveryone() throws JsonProcessingException {
         Game game = Game.builder()
                 .currentQuestion(gameService.getCurrentQuestion())
-                .players(gameService.getPlayers())
+                .players(gameService.getPlayers().stream().map(p -> new PublicPlayer(p.id(), p.name())).collect(Collectors.toList()))
                 .build();
         String json = objectMapper.writeValueAsString(game);
         sessions.forEach(s -> {
@@ -58,5 +63,6 @@ public class GameWebSocketService extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.remove(session);
+        gameService.deletePlayer(session.getId());
     }
 }

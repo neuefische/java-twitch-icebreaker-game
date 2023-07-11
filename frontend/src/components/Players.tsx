@@ -9,25 +9,16 @@ export default function Players(props: Props) {
 
     const [name, setName] = useState<string>("")
 
-    const onPlayerAdd = () => {
-        axios.post('/api/players', {name: name})
-            .then(() => setName(""))
-    }
-
-    const onPlayerDelete = (player: Player) => {
-        axios.delete(`/api/players/${player.name}`)
-    }
-
     function changeGuess(player: Player, event: React.ChangeEvent<HTMLInputElement>) {
         let input = Number(event.target.value);
         if (player.guess === input) return
         player.guess = input
-        axios.put(`/api/players/${player.name}`, player)
+        axios.put(`/api/players/${player.id}`, player)
     }
 
     function changeAnswer(player: Player) {
         player.answer = !player.answer
-        axios.put(`/api/players/${player.name}`, player)
+        axios.put(`/api/players/${player.id}`, player)
     }
 
     return (
@@ -40,13 +31,10 @@ export default function Players(props: Props) {
                                    onChange={event => changeGuess(player, event)}/>
                             <input type={"checkbox"} checked={player.answer}
                                    onChange={event => changeAnswer(player)}/>
-                            <button onClick={() => onPlayerDelete(player)}>🗑</button>
                         </p>
                     </li>
                 )}
             </ul>
-            <input placeholder={"Username"} type={"text"} value={name} onChange={event => setName(event.target.value)}/>
-            <button onClick={() => onPlayerAdd()}>Save</button>
         </>
     )
 

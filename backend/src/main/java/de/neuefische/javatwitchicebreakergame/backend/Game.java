@@ -7,6 +7,6 @@ import java.util.List;
 @Builder
 public record Game(
     Question currentQuestion,
-    List<Player> players
+    List<PublicPlayer> players
 ) {
 }

@@ -29,13 +29,13 @@ public class GameService {
         players.add(player);
     }
 
-    public void deletePlayer(String name) {
-        players.removeIf(player -> player.name().equals(name));
+    public void deletePlayer(String id) {
+        players.removeIf(player -> player.id().equals(id));
     }
 
     public void updatePlayer(Player player ){
         this.players = players.stream()
-                .map(currentPlayer -> currentPlayer.name().equals(player.name()) ? player : currentPlayer)
+                .map(currentPlayer -> currentPlayer.id().equals(player.id()) ? player : currentPlayer)
                 .collect(Collectors.toList());
     }
 }
