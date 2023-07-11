@@ -9,7 +9,12 @@ function App() {
 
     const [game, setGame] = useState<Game>()
 
-    useWebSocket("ws://localhost:8080/api/ws/game", {
+    let host = window.location.host;
+    if (host === "localhost:3000") {
+        host = "localhost:8080"
+    }
+
+    useWebSocket("ws://" + host+"/api/ws/game", {
         onOpen: () => console.log("opened"),
         onMessage: (event) => {
             setGame(JSON.parse(event.data))
